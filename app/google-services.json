@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "226250736539",
+    "firebase_url": "https://mini-project-2-3470b-default-rtdb.firebaseio.com",
+    "project_id": "mini-project-2-3470b",
+    "storage_bucket": "mini-project-2-3470b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226250736539:android:9b0d9d3e441e43d000973e",
+        "android_client_info": {
+          "package_name": "ece.np.edu.miniproject2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226250736539-u5jqtp9a5g51m6jfr2cbljk5a5ihln6k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe5JpN0Kbx4cnXCgRoVfLyKQErdMSa9Uc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226250736539-u5jqtp9a5g51m6jfr2cbljk5a5ihln6k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226250736539:android:181d0f7acafeaf2800973e",
+        "android_client_info": {
+          "package_name": "ece.np.edu.miniproject2datastorage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226250736539-u5jqtp9a5g51m6jfr2cbljk5a5ihln6k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe5JpN0Kbx4cnXCgRoVfLyKQErdMSa9Uc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226250736539-u5jqtp9a5g51m6jfr2cbljk5a5ihln6k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
