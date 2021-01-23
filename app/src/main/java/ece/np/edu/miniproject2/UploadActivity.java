@@ -115,34 +115,25 @@ public class UploadActivity extends AppCompatActivity {
                     binding.progressBar3.setProgress((int) progress);
                     binding.btUpload.setClickable(false);
                 }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(getApplicationContext(), "Upload success!", Toast.LENGTH_SHORT).show();
-                    binding.progressBar3.setProgress(0);
-                    binding.btUpload.setClickable(true);
-                }
-            }).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                    if(!task.isSuccessful())
-                        throw task.getException();
-                    else
-                        return fileUpload.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.isSuccessful()) {
-                        Log.i(TAG, "Task is successful");
-                        Uri downloadUri = task.getResult();
-                        Log.i(TAG, downloadUri.toString());
-                        UploadImage upload = new UploadImage(strfileName, downloadUri.toString());
-                        dBRef.push().setValue(upload);
-                        Toast.makeText(UploadActivity.this.getApplicationContext(), "Upload success", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(UploadActivity.this.getApplicationContext(), "Upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+            }).addOnSuccessListener(taskSnapshot -> {
+                Toast.makeText(getApplicationContext(), "Upload success!", Toast.LENGTH_SHORT).show();
+                binding.progressBar3.setProgress(0);
+                binding.btUpload.setClickable(true);
+            }).continueWithTask(task -> {
+                if(!task.isSuccessful())
+                    throw task.getException();
+                else
+                    return fileUpload.getDownloadUrl();
+            }).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.i(TAG, "Task is successful");
+                    Uri downloadUri = task.getResult();
+                    Log.i(TAG, downloadUri.toString());
+                    UploadImage upload = new UploadImage(strfileName, downloadUri.toString());
+                    dBRef.push().setValue(upload);
+                    Toast.makeText(UploadActivity.this.getApplicationContext(), "Upload success", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(UploadActivity.this.getApplicationContext(), "Upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }

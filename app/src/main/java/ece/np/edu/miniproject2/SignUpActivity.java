@@ -61,9 +61,6 @@ public class SignUpActivity extends AppCompatActivity {
                 binding.etEmail.setError("Email is required.");
                 return;
             }
-            /*if(!Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()){
-                binding.etEmail.setError("Please enter a valid email.");
-            }*/
             if (!isValid(strEmail)) {
                 binding.etEmail.setError("Please enter a valid email.");
                 return;
@@ -79,31 +76,26 @@ public class SignUpActivity extends AppCompatActivity {
             binding.progressBar.setVisibility(View.VISIBLE);
 
             //Registering user into Firebase
-            fAuth.createUserWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "signInWithEmail:success");
-                        Toast.makeText(SignUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
+            fAuth.createUserWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "signInWithEmail:success");
+                    Toast.makeText(SignUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
 
-                        FirebaseUser user = fAuth.getCurrentUser();
-                        //
-                        String UserID = user.getUid();
-                        dBRef = database.getReference("Users");
-                        Users setUser = new Users(strName, strPassword, strEmail, strPhone);
-                        dBRef.child(UserID).setValue(setUser);
-                        Intent i = new Intent(SignUpActivity.this, UploadActivity.class);
-                        startActivity(i);
-                        finish();
-                    } else {
-                        Log.w(TAG, task.getException());
-                        Toast.makeText(SignUpActivity.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        binding.progressBar.setVisibility(View.GONE);
-                    }
+                    FirebaseUser user = fAuth.getCurrentUser();
+                    String UserID = user.getUid();
+                    dBRef = database.getReference("Users");
+                    Users setUser = new Users(strName, strEmail, strPhone);
+                    dBRef.child(UserID).setValue(setUser);
+                    Intent i = new Intent(SignUpActivity.this, UploadActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    Log.w(TAG, task.getException());
+                    Toast.makeText(SignUpActivity.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.progressBar.setVisibility(View.GONE);
                 }
             });
         });
-
     }
 
     public static boolean isValid(String email) {
@@ -118,7 +110,11 @@ public class SignUpActivity extends AppCompatActivity {
         return pat.matcher(email).matches();
     }
 
-    ;
+    public void ForgotPass(View v){
+        i = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
+        startActivity(i);
+        finish();
+    }
 
     public void Login(View view) {
         i = new Intent(getApplicationContext(), LoginActivity.class);

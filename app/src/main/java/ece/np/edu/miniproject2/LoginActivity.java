@@ -73,6 +73,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public void ForgotPass(View v){
+        i = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
+        startActivity(i);
+        finish();
+    }
+
     public void SignUp(View view) {
         i = new Intent(getApplicationContext(), SignUpActivity.class);
         startActivity(i);

@@ -7,6 +7,21 @@
     tools:context=".SignUpActivity">
 
     <TextView
+        android:id="@+id/tvForgot2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="92dp"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="ForgotPass"
+        android:text="Forgot password?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLogin"
+        app:layout_constraintVertical_bias="0.695" />
+
+    <TextView
         android:id="@+id/textView3"
         android:layout_width="319dp"
         android:layout_height="42dp"
@@ -119,8 +134,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvLogin"
-        app:layout_constraintVertical_bias="0.092" />
+        app:layout_constraintTop_toBottomOf="@+id/tvForgot2"
+        app:layout_constraintVertical_bias="0.352" />
 
     <TextView
         android:id="@+id/tvLogin"
