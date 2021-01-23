@@ -74,6 +74,10 @@ public class SignUpActivity extends AppCompatActivity {
                 binding.etPassword.setError("Password length must be more than 6.");
                 return;
             }
+            if(TextUtils.isEmpty(strName)){
+                binding.etName.setError("Name is required.");
+                return;
+            }
             binding.progressBar.setVisibility(View.VISIBLE);
 
             //Registering user into Firebase
