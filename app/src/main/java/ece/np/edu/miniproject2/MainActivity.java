@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             fAuth = FirebaseAuth.getInstance();
             FirebaseUser currentUser = fAuth.getCurrentUser();
             if (currentUser != null) {
-                Intent i = new Intent(MainActivity.this, DashBoardActivity.class);
+                Intent i = new Intent(MainActivity.this, UploadActivity.class);
                 startActivity(i);
                 finishAffinity();
             } else {

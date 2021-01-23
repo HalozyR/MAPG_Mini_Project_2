@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Logged in successfully", Toast.LENGTH_SHORT).show();
                                 binding.progressBar2.setVisibility(View.GONE);
                                 FirebaseUser user = fAuth.getCurrentUser();
-                                i = new Intent(getApplicationContext(), DashBoardActivity.class);
+                                i = new Intent(getApplicationContext(), UploadActivity.class);
                                 startActivity(i);
                             }
                             else{

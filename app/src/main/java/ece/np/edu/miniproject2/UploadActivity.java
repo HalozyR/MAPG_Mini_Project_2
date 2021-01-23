@@ -20,8 +20,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -30,16 +32,16 @@ import com.google.firebase.storage.UploadTask;
 
 import ece.np.edu.miniproject2.databinding.ActivityDashBoardBinding;
 
-public class DashBoardActivity extends AppCompatActivity {
+public class UploadActivity extends AppCompatActivity {
 
     private final static String TAG = "DashBoard";
-    private String strCurrentUserUID, strCurrentUserName, UploadID;
+    private String strCurrentUserUID;
     private Intent i;
     private ActivityDashBoardBinding binding;
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri ImageUri;
     private FirebaseDatabase fDatabase;
-    private DatabaseReference dBRef;
+    private DatabaseReference dBRef, nRef;
     private FirebaseStorage fStorage;
     private StorageReference sRef;
     private FirebaseAuth fAuth;
@@ -53,15 +55,28 @@ public class DashBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDashBoardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setTitle("Dashboard");
+        setTitle("Upload Image");
         fAuth = FirebaseAuth.getInstance();
         currentUser = fAuth.getCurrentUser();
         strCurrentUserUID = currentUser.getUid();
-        //Adding username
-        /*
-        */
         fStorage = FirebaseStorage.getInstance();
         fDatabase = FirebaseDatabase.getInstance();
+        //Adding username
+        nRef = fDatabase.getReference("Users").child(strCurrentUserUID);
+        nRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Users currentUser = snapshot.getValue(Users.class);
+                binding.tvWelcome.setVisibility(View.VISIBLE);
+                String name = currentUser.getName();
+                binding.tvWelcome.setText("Welcome "+name);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(UploadActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
         sRef = fStorage.getReference("Users").child(strCurrentUserUID).child("Images");
         dBRef = fDatabase.getReference("Storage").child("Users").child(strCurrentUserUID).child("Images");
         Log.i(TAG, "Current UserID: " + strCurrentUserUID);
@@ -69,7 +84,7 @@ public class DashBoardActivity extends AppCompatActivity {
         binding.btChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DashBoardActivity.this.OpenFile();
+                UploadActivity.this.OpenFile();
             }
         });
 
@@ -82,7 +97,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
         binding.btLogout.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            i = new Intent(DashBoardActivity.this, LoginActivity.class);
+            i = new Intent(UploadActivity.this, LoginActivity.class);
             startActivity(i);
             finish();
         });
@@ -124,9 +139,9 @@ public class DashBoardActivity extends AppCompatActivity {
                         Log.i(TAG, downloadUri.toString());
                         UploadImage upload = new UploadImage(strfileName, downloadUri.toString());
                         dBRef.push().setValue(upload);
-                        Toast.makeText(DashBoardActivity.this.getApplicationContext(), "Upload success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UploadActivity.this.getApplicationContext(), "Upload success", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(DashBoardActivity.this.getApplicationContext(), "Upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UploadActivity.this.getApplicationContext(), "Upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

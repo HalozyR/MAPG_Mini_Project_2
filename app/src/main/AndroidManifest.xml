@@ -14,7 +14,7 @@
         <activity android:name=".ForgotPasswordActivity"></activity>
         <activity android:name=".ImageActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".DashBoardActivity" />
+        <activity android:name=".UploadActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
