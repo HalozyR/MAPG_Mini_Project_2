@@ -82,6 +82,7 @@ public class ImageActivity extends AppCompatActivity implements ImageAdapter.onI
 
     @Override
     public void onSelectClick(int position) {
+
         Toast.makeText(this, "Select click at position: "+ position, Toast.LENGTH_SHORT).show();
     }
 

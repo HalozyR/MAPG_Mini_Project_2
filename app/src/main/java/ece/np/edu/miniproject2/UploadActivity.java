@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -97,7 +98,7 @@ public class UploadActivity extends AppCompatActivity {
 
         binding.btLogout.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            i = new Intent(UploadActivity.this, LoginActivity.class);
+            i = new Intent(UploadActivity.this, MainActivity.class);
             startActivity(i);
             finish();
         });
@@ -116,9 +117,15 @@ public class UploadActivity extends AppCompatActivity {
                     binding.btUpload.setClickable(false);
                 }
             }).addOnSuccessListener(taskSnapshot -> {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.progressBar3.setProgress(0);
+                        binding.btUpload.setClickable(true);
+                    }
+                },1000);
                 Toast.makeText(getApplicationContext(), "Upload success!", Toast.LENGTH_SHORT).show();
-                binding.progressBar3.setProgress(0);
-                binding.btUpload.setClickable(true);
             }).continueWithTask(task -> {
                 if(!task.isSuccessful())
                     throw task.getException();

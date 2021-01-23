@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -78,17 +79,24 @@ public class SignUpActivity extends AppCompatActivity {
             //Registering user into Firebase
             fAuth.createUserWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Log.d(TAG, "signInWithEmail:success");
-                    Toast.makeText(SignUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
-
                     FirebaseUser user = fAuth.getCurrentUser();
-                    String UserID = user.getUid();
-                    dBRef = database.getReference("Users");
-                    Users setUser = new Users(strName, strEmail, strPhone);
-                    dBRef.child(UserID).setValue(setUser);
-                    Intent i = new Intent(SignUpActivity.this, UploadActivity.class);
-                    startActivity(i);
-                    finish();
+                    UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder().setDisplayName(strName).build();
+                    user.updateProfile(profileUpdate);
+                    fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task1 -> {
+                        if(task.isSuccessful()){
+                            Toast.makeText(this, "Registered successfully. Please check your email for verification", Toast.LENGTH_LONG).show();
+                            Log.d(TAG, "signInWithEmail:success");
+                            String UserID = user.getUid();
+                            dBRef = database.getReference("Users");
+                            Users setUser = new Users(strName, strEmail, strPhone);
+                            dBRef.child(UserID).setValue(setUser);
+                            Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
+                            startActivity(i);
+                            finish();
+                        }else{
+                            Toast.makeText(this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else {
                     Log.w(TAG, task.getException());
                     Toast.makeText(SignUpActivity.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
