@@ -92,7 +92,7 @@ public class SignUpActivity extends AppCompatActivity {
                         dBRef = database.getReference("Users");
                         Users setUser = new Users(strName, strPassword, strEmail, strPhone);
                         dBRef.child(UserID).setValue(setUser);
-                        Intent i = new Intent(SignUpActivity.this, DashBoardActivity.class);
+                        Intent i = new Intent(SignUpActivity.this, UploadActivity.class);
                         startActivity(i);
                         finish();
                     } else {
