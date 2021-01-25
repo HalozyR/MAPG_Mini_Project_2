@@ -1,8 +1,12 @@
 package ece.np.edu.miniproject2;
 
 import android.app.admin.DevicePolicyManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -22,6 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,10 +88,10 @@ public class ImageActivity extends AppCompatActivity implements ImageAdapter.onI
         });
     }
 
+
     @Override
     public void onSelectClick(int position) {
-
-        Toast.makeText(this, "Select click at position: "+ position, Toast.LENGTH_SHORT).show();
+        
     }
 
     @Override

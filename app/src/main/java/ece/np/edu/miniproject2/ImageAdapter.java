@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import ece.np.edu.miniproject2.databinding.ImageItemBinding;
@@ -77,7 +79,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             if (mListener != null){
                 int position = getAdapterPosition();
                 if(position != RecyclerView.NO_POSITION){
-                    mListener.onSelectClick(position);
+                    try {
+                        mListener.onSelectClick(position);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -98,7 +104,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 if(position != RecyclerView.NO_POSITION){
                     switch (item.getItemId()){
                         case 1:
-                            mListener.onSelectClick(position);
+                            try {
+                                mListener.onSelectClick(position);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             return true;
                         case 2:
                             mListener.onDeleteClick(position);
@@ -111,7 +121,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     }
 
     public interface onItemClickListener{
-        void onSelectClick(int position);
+        void onSelectClick(int position) throws IOException;
         void onDeleteClick(int position);
     }
 
