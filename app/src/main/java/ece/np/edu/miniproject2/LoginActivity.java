@@ -35,6 +35,11 @@ public class LoginActivity extends AppCompatActivity {
 
         //Logging user into the app
         binding.btLogin.setOnClickListener(v -> {
+            CheckConnection connection = new CheckConnection();
+            if(!connection.isConnected(getApplicationContext())){
+                Toast.makeText(this, "No internet", Toast.LENGTH_SHORT).show();
+                return;
+            }
             binding.progressBar2.setVisibility(View.VISIBLE);
             String strEmail = binding.etEmail.getText().toString().trim();
             String strPassword = binding.etPassword.getText().toString().trim();
@@ -64,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             else{
                                 Log.w(TAG, "signInWithEmail:failed", task.getException());
-                                Toast.makeText(getApplicationContext(),"Error: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"Error: "+task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                 binding.progressBar2.setVisibility(View.GONE);
                                 return;
                             }

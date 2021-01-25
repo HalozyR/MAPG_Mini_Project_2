@@ -1,19 +1,12 @@
 package ece.np.edu.miniproject2;
 
-import android.app.admin.DevicePolicyManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,15 +19,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ece.np.edu.miniproject2.databinding.ActivityImageBinding;
-import kotlin.collections.MapsKt;
 
 public class ImageActivity extends AppCompatActivity implements ImageAdapter.onItemClickListener {
 
@@ -43,7 +31,7 @@ public class ImageActivity extends AppCompatActivity implements ImageAdapter.onI
     private ValueEventListener mDBListener;
     private FirebaseStorage mStorage;
     private DatabaseReference mRef;
-    private List<UploadImage> uploadImageList;
+    private List<Image> imageList;
     private FirebaseAuth fAuth;
 
 
@@ -59,8 +47,8 @@ public class ImageActivity extends AppCompatActivity implements ImageAdapter.onI
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        uploadImageList = new ArrayList<>();
-        imageAdapter = new ImageAdapter(getApplicationContext(), uploadImageList);
+        imageList = new ArrayList<>();
+        imageAdapter = new ImageAdapter(getApplicationContext(), imageList);
         binding.recyclerView.setAdapter(imageAdapter);
         imageAdapter.setOnItemClickListener(ImageActivity.this);
 
@@ -70,11 +58,11 @@ public class ImageActivity extends AppCompatActivity implements ImageAdapter.onI
         mDBListener = mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                uploadImageList.clear();
+                imageList.clear();
                 for(DataSnapshot postSnapshot : snapshot.getChildren()){
-                    UploadImage retrieveImage = postSnapshot.getValue(UploadImage.class);
+                    Image retrieveImage = postSnapshot.getValue(Image.class);
                     retrieveImage.setKey(postSnapshot.getKey());
-                    uploadImageList.add(retrieveImage);
+                    imageList.add(retrieveImage);
                 }
                 imageAdapter.notifyDataSetChanged();
                 binding.pbImage.setVisibility(View.INVISIBLE);
@@ -88,15 +76,14 @@ public class ImageActivity extends AppCompatActivity implements ImageAdapter.onI
         });
     }
 
-
     @Override
     public void onSelectClick(int position) {
-        
+        Toast.makeText(this, "Long press for option to delete", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDeleteClick(int position) {
-        UploadImage selectedItem = uploadImageList.get(position);
+        Image selectedItem = imageList.get(position);
         String selectedKey = selectedItem.getKey();
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());
         imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {

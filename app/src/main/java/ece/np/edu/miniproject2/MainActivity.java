@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,10 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String TAG = "MainActivity";
     private ActivityMainBinding binding;
-    private FirebaseDatabase database;
-    private DatabaseReference dBReference;
     private FirebaseAuth fAuth;
-    private Handler handler;
     private static final int REQ_CODE_PERMISSION = 1;
 
 
@@ -34,14 +32,13 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setTitle("DS Storage");
-        int readPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int writePermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
-
-        if(readPermission != PackageManager.PERMISSION_GRANTED && writePermission != PackageManager.PERMISSION_GRANTED){
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, REQ_CODE_PERMISSION);
-        }
 
         binding.btGo.setOnClickListener(v -> {
+            CheckConnection connection = new CheckConnection();
+            if(!connection.isConnected(getApplicationContext())){
+                Toast.makeText(this, "No internet", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Log.i(TAG, "Go Button click");
             fAuth = FirebaseAuth.getInstance();
             FirebaseUser currentUser = fAuth.getCurrentUser();

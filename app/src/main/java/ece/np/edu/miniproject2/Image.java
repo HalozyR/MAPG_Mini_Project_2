@@ -6,16 +6,16 @@ import com.google.firebase.database.Exclude;
 
 import org.w3c.dom.Text;
 
-public class UploadImage {
+public class Image {
     private String FileName;
     private String ImageUrl;
     private String mKey;
 
-    public UploadImage(){
+    public Image(){
 
     }
 
-    public UploadImage(String pFileName, String pImageUrl) {
+    public Image(String pFileName, String pImageUrl) {
         if(TextUtils.isEmpty(pFileName)) {
             FileName = "No Name";
         }else {

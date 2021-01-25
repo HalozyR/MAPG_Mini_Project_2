@@ -53,11 +53,20 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         binding.btRegister.setOnClickListener(v -> {
+            CheckConnection connection = new CheckConnection();
+            if(!connection.isConnected(getApplicationContext())){
+                Toast.makeText(this, "No internet", Toast.LENGTH_SHORT).show();
+                return;
+            }
             String strEmail = binding.etEmail.getText().toString().trim();
             String strPassword = binding.etPassword.getText().toString().trim();
             String strName = binding.etName.getText().toString().trim();
             String strPhone = binding.etPhone.getText().toString().trim();
 
+            if(TextUtils.isEmpty(strName)){
+                binding.etName.setError("Name is required.");
+                return;
+            }
             if (TextUtils.isEmpty(strEmail)) {
                 binding.etEmail.setError("Email is required.");
                 return;
@@ -72,10 +81,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
             if (strPassword.length() <= 6) {
                 binding.etPassword.setError("Password length must be more than 6.");
-                return;
-            }
-            if(TextUtils.isEmpty(strName)){
-                binding.etName.setError("Name is required.");
                 return;
             }
             binding.progressBar.setVisibility(View.VISIBLE);

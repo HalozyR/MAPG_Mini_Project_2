@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import ece.np.edu.miniproject2.databinding.ImageItemBinding;
@@ -27,10 +25,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     private final static String TAG = "ImageAdapter";
     private Context context;
-    private List<UploadImage> uploads;
+    private List<Image> uploads;
     private onItemClickListener mListener;
 
-    public ImageAdapter(Context context, List<UploadImage> uploads) {
+    public ImageAdapter(Context context, List<Image> uploads) {
         this.context = context;
         this.uploads = uploads;
     }
@@ -44,7 +42,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        UploadImage uploadCurrent = uploads.get(position);
+        Image uploadCurrent = uploads.get(position);
         holder.tvName.setText(uploadCurrent.getFileName());
         Picasso.get()
                 .load(uploadCurrent.getImageUrl())
@@ -79,21 +77,17 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             if (mListener != null){
                 int position = getAdapterPosition();
                 if(position != RecyclerView.NO_POSITION){
-                    try {
                         mListener.onSelectClick(position);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            MenuItem selectItem = menu.add(Menu.NONE, 1, 1, "Select Image");
-            MenuItem deleteItem = menu.add(Menu.NONE, 2, 2, "Delete");
+            //MenuItem selectItem = menu.add(Menu.NONE, 1, 1, "Select Image");
+            MenuItem deleteItem = menu.add(Menu.NONE, 1, 1, "Delete");
 
-            selectItem.setOnMenuItemClickListener(this);
+            //selectItem.setOnMenuItemClickListener(this);
             deleteItem.setOnMenuItemClickListener(this);
         }
 
@@ -104,13 +98,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 if(position != RecyclerView.NO_POSITION){
                     switch (item.getItemId()){
                         case 1:
-                            try {
-                                mListener.onSelectClick(position);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            return true;
-                        case 2:
                             mListener.onDeleteClick(position);
                             return true;
                     }
@@ -121,7 +108,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     }
 
     public interface onItemClickListener{
-        void onSelectClick(int position) throws IOException;
+        void onSelectClick(int position);
         void onDeleteClick(int position);
     }
 

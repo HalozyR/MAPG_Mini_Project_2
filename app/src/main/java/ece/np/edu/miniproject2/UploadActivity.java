@@ -14,10 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -68,7 +64,6 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Users currentUser = snapshot.getValue(Users.class);
-                binding.tvWelcome.setVisibility(View.VISIBLE);
                 String name = currentUser.getName();
                 binding.tvWelcome.setText("Welcome "+name);
             }
@@ -136,7 +131,7 @@ public class UploadActivity extends AppCompatActivity {
                     Log.i(TAG, "Task is successful");
                     Uri downloadUri = task.getResult();
                     Log.i(TAG, downloadUri.toString());
-                    UploadImage upload = new UploadImage(strfileName, downloadUri.toString());
+                    Image upload = new Image(strfileName, downloadUri.toString());
                     dBRef.push().setValue(upload);
                     Toast.makeText(UploadActivity.this.getApplicationContext(), "Upload success", Toast.LENGTH_SHORT).show();
                 } else {
